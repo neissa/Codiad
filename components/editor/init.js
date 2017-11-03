@@ -17,7 +17,8 @@
 
     var codiad = global.codiad;
     codiad._cursorPoll = null;
-
+    codiad._currentCursorText = null;
+    
     var separatorWidth = 3;
 
     $(function(){
@@ -1359,13 +1360,15 @@
             i = i || this.getActive();
             if (! i) return;
             clearInterval(codiad._cursorPoll);
-            codiad._cursorPoll = setInterval(function() {
-                $('#cursor-position')
-                    .html(i18n('Ln') + ': '
-                          + (i.getCursorPosition().row + 1)
-                          + ' &middot; ' + i18n('Col') + ': '
-                          + i.getCursorPosition().column
-                         );
+            codiad._currentCursorText = setInterval(function() {
+                data = (i.getCursorPosition().row + 1) 
+                    + ' &middot; ' 
+                    + i18n('Col') 
+                    + ': ' 
+                    + i.getCursorPosition().column;
+                if( codiad._currentCursorText != data)
+                    $('#cursor-position').html(i18n('Ln') + ': ' + data);
+                codiad._currentCursorText = data;
             }, 100);
         },
 
